@@ -877,3 +877,7 @@ scax: 1.4
 scay: 0.4
 scaz: 2.0
 
+mod: PLCC127P1752X1752X368-44
+3dmod: smd_plcc/plcc44.wrl
+rotz: 180
+
