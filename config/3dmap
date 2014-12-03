@@ -917,3 +917,6 @@ mod: SOP65P490X109-8
 3dmod: smd_dil/msoic-8.wrl
 rotz: 90
 
+mod: QFP80P900X900X120-32
+3dmod: smd_lqfp/lqfp-32.wrl
+rotz: 90
