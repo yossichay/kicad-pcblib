@@ -265,6 +265,7 @@ class PCBmodule (object):
             S("value"), "VAL**",
             [S("at"), 0, 0],
             [S("layer"), "F.SilkS"],
+            S("hide"),
             [S("effects"),
                 [S("font"),
                     [S("size"), 0.8, 0.8],
