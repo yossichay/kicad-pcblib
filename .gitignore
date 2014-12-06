@@ -1,3 +1,5 @@
 *.pyc
 *.zip
-*.pretty
+IPC7351-Least.pretty
+IPC7351-Most.pretty
+IPC7351-Nominal.pretty
