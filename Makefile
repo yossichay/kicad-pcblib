@@ -1,4 +1,4 @@
-PYTHON := /usr/bin/python2
+PYTHON ?= /usr/bin/python
 
 IPC_LEAST := http://www.freepcb.com/downloads/IPC7351-Least_v2.zip
 IPC_MOST := http://www.freepcb.com/downloads/IPC7351-Most_v2.zip

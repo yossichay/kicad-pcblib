@@ -147,7 +147,7 @@ def main ():
         except Exception as e:
             exceptions.append (e)
         for exc in exceptions:
-            print exc
+            print (exc)
         if exceptions:
             raise Exception ("Errors occurred.")
 
@@ -169,7 +169,7 @@ def main_2 (args, tempdir, zipfile):
         files.append (destname)
         with open (destname, 'w') as destfile:
             with zipfile.open (zipmember) as srcfile:
-                destfile.write (srcfile.read ())
+                destfile.write (srcfile.read ().decode ('utf8'))
 
     # Generate KiCad files
     fpargs = FREEPCB2KICAD_ARGS + [args.dest] + files
