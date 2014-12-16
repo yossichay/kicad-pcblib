@@ -3,10 +3,8 @@
 
 # freepcb2kicad
 
-# Copyright 2013, Chris Pavlina
-# All rights reserved.
-# BSD license.
-# c4757p.com/software/kicadlib
+# Written in 2013 by Chris Pavlina
+# CC0 1.0 Universal
 
 # This script reads a FreePCB library file and converts it to a KiCad module
 # file, primarily for generating the KiCad IPC libraries.

@@ -3,10 +3,8 @@
 
 # freepcb2pretty
 
-# Copyright 2014, Chris Pavlina
-# All rights reserved.
-# BSD license.
-# c4757p.com/software/kicadlib
+# Written in 2014 by Chris Pavlina
+# CC0 1.0 Universal
 
 # This script reads a FreePCB library file and converts it to a KiCad
 # "pretty" library, primarily for generating the KiCad IPC libraries.

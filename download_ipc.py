@@ -3,10 +3,8 @@
 
 # download_ipc
 
-# Copyright 2013, Chris Pavlina
-# All rights reserved.
-# BSD license.
-# c4757p.com/software/kicadlib
+# Written in 2013 by Chris Pavlina
+# CC0 1.0 Universal
 
 # This script downloads the IPC libraries from FreePCB and converts them to
 # KiCad format using freepcb2kicad.
