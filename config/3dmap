@@ -920,3 +920,14 @@ rotz: 90
 mod: QFP80P900X900X120-32
 3dmod: smd_lqfp/lqfp-32.wrl
 rotz: 90
+
+mod: RESC1608X50
+3dmod: smd_resistors/r_0603.wrl
+
+mod: RESC2012X50
+3dmod: smd_resistors/r_0805.wrl
+
+mod: SOIC127P600X150-16
+3dmod: smd_dil/so-16.wrl
+rotz: 90
+
