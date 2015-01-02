@@ -931,3 +931,10 @@ mod: SOIC127P600X150-16
 3dmod: smd_dil/so-16.wrl
 rotz: 90
 
+mod: QFP80P1200X1200X120-44
+3dmod: smd_lqfp/lqfp-44.wrl
+rotz: 90
+
+mod: QFN65P800X800X100-45V2
+3dmod: smd_qfn/qfn-44.wrl
+rotz: 90
