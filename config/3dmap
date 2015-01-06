@@ -938,3 +938,7 @@ rotz: 90
 mod: QFN65P800X800X100-45V2
 3dmod: smd_qfn/qfn-44.wrl
 rotz: 90
+
+mod: SOP50P490X110-10
+3dmod: smd_dil/msoic-10.wrl
+rotz: 90
