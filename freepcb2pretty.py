@@ -254,6 +254,8 @@ class PCBmodule (object):
         sexp.append ([S("layer"), "F.Cu"])
         sexp.append ([S("tedit"), "%08X" % int (time.time ())])
 
+        sexp.append ([S("descr"), str(self.Description)])
+
         sexp.append ([S("fp_text"),
             S("reference"), self.Name,
             [S("at"), 0, 0],
