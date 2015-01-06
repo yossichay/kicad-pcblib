@@ -104,6 +104,7 @@ def main ():
         if not args.no_confirm_license:
             confirm_license ()
         url = urlopen (args.src)
+        print ("Downloading FreePCB library...")
         try:
             data = url.read ()
         except Exception as e:
@@ -113,7 +114,7 @@ def main ():
             url.close ()
         ipc_f = BytesIO (data) # data is bytes in Py3
     else:
-        ipc_f = open (args.src)
+        ipc_f = open (args.src, 'rb')
     ipc_zip = zipfile.ZipFile (ipc_f)
 
     # Create a temporary working directory, and extract the IPC files
@@ -156,22 +157,9 @@ def main_2 (args, tempdir, zipfile):
     # Load freepcb2kicad
     freepcb2kicad = imp.load_source ("freepcb2kicad", args.fp2kicad)
 
-    # Extract all FPL files
-    count = 0
-    files = []
-    for zipmember in zipfile.namelist ():
-        if not zipmember.lower ().endswith (".fpl"):
-            continue
-        destname = os.path.join (tempdir, "%d.fpl" % count)
-        count += 1
-        files.append (destname)
-        with open (destname, 'w') as destfile:
-            with zipfile.open (zipmember) as srcfile:
-                destfile.write (srcfile.read ().decode ('utf8'))
-
     # Generate KiCad files
-    fpargs = FREEPCB2KICAD_ARGS + [args.dest] + files
-    freepcb2kicad.main (fpargs)
+    fpargs = FREEPCB2KICAD_ARGS + [args.dest]
+    freepcb2kicad.main (fpargs, zipfile=zipfile)
 
 if __name__ == "__main__":
     main ()
