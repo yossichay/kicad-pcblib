@@ -942,3 +942,15 @@ rotz: 90
 mod: SOP50P490X110-10
 3dmod: smd_dil/msoic-10.wrl
 rotz: 90
+
+mod: RESCAXE80P160X320X70-8
+3dmod: smd_resistors/r_cat16-4.wrl
+scax: 1.5
+
+mod: RESCAV80P160X320X70-8
+3dmod: smd_resistors/r_cat16-4.wrl
+scax: 1.5
+
+mod: QFP50P900X900X160-48
+3dmod: smd_lqfp/lqfp-48.wrl
+rotz: 90
