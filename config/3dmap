@@ -921,6 +921,9 @@ mod: QFP80P900X900X120-32
 3dmod: smd_lqfp/lqfp-32.wrl
 rotz: 90
 
+mod: RESC1005X40
+3dmod: smd_resistors/r_0402.wrl
+
 mod: RESC1608X50
 3dmod: smd_resistors/r_0603.wrl
 
@@ -953,4 +956,8 @@ scax: 1.5
 
 mod: QFP50P900X900X160-48
 3dmod: smd_lqfp/lqfp-48.wrl
+rotz: 90
+
+mod: PQFN50P400X400X100-25
+3dmod: smd_qfn/qfn-24.wrl
 rotz: 90
