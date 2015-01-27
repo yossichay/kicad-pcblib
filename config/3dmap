@@ -961,3 +961,8 @@ rotz: 90
 mod: PQFN50P400X400X100-25
 3dmod: smd_qfn/qfn-24.wrl
 rotz: 90
+
+mod: SOP65P780X200-20
+3dmod: smd_dil/tssop-20.wrl
+scay: 1.2
+rotz: 90
