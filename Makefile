@@ -28,7 +28,7 @@ else
 endif
 
 
-.PHONY: ipcpretty
+.PHONY: ipcpretty 3d
 
 ipcpretty: IPC7351-Least_v2.zip IPC7351-Most_v2.zip IPC7351-Nominal_v2.zip
 	rm -rf IPC7351-Least.pretty
@@ -56,3 +56,6 @@ IPC7351-Most_v2.zip:
 IPC7351-Nominal_v2.zip:
 	wget ${IPC_NOMINAL}
 
+3d:
+	rm -rf 3d
+	${PYTHON} download_3d.py
