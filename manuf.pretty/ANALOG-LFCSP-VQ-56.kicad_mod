@@ -1,5 +1,5 @@
-(module LFCSP_VQ_56_ADI (layer F.Cu) (tedit 544DB01D)
-  (fp_text reference LFCSP_VQ_56_ADI (at 0 0) (layer F.SilkS)
+(module ANALOG-LFCSP-VQ-56 (layer F.Cu) (tedit 544DB01D)
+  (fp_text reference ANALOG-LFCSP-VQ-56 (at 0 0) (layer F.SilkS)
     (effects (font (size 0.8 0.8) (thickness 0.15)))
   )
   (fp_text value VAL** (at 0 0) (layer F.SilkS)

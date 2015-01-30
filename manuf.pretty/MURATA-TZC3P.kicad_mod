@@ -1,5 +1,5 @@
-(module CV-TZC3P-MURATA (layer F.Cu) (tedit 54BB10AE)
-  (fp_text reference CV-TZC3P-MURATA (at 0 0) (layer F.SilkS)
+(module MURATA-TZC3P (layer F.Cu) (tedit 54BB10AE)
+  (fp_text reference MURATA-TZC3P (at 0 0) (layer F.SilkS)
     (effects (font (size 0.8 0.8) (thickness 0.2)))
   )
   (fp_text value VAL** (at 0 0) (layer F.SilkS) hide

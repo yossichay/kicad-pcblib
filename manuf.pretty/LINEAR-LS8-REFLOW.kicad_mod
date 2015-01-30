@@ -1,5 +1,5 @@
-(module LS8-LTC-REFLOW (layer F.Cu) (tedit 54034C39)
-  (fp_text reference LS8-LTC-REFLOW (at 0 0) (layer F.SilkS)
+(module LINEAR-LS8-REFLOW (layer F.Cu) (tedit 54034C39)
+  (fp_text reference LINEAR-LS8-REFLOW (at 0 0) (layer F.SilkS)
     (effects (font (size 0.8 0.8) (thickness 0.2)))
   )
   (fp_text value VAL** (at 0 0) (layer F.SilkS) hide

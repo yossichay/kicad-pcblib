@@ -1,5 +1,5 @@
-(module LS8-LTC-IRON (layer F.Cu) (tedit 54034CAD)
-  (fp_text reference LS8-LTC-IRON (at 0 0) (layer F.SilkS)
+(module LINEAR-LS8-HANDSOLDER (layer F.Cu) (tedit 54034CAD)
+  (fp_text reference LINEAR-LS8-HANDSOLDER (at 0 0) (layer F.SilkS)
     (effects (font (size 0.8 0.8) (thickness 0.2)))
   )
   (fp_text value VAL** (at 0 0) (layer F.SilkS) hide

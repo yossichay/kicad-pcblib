@@ -1,5 +1,5 @@
-(module QFP50P-145-ALTERA (layer F.Cu) (tedit 53EF8420)
-  (fp_text reference QFP50P-145-ALTERA (at 0 0) (layer F.SilkS)
+(module ALTERA-QFP-145 (layer F.Cu) (tedit 53EF8420)
+  (fp_text reference ALTERA-QFP-145 (at 0 0) (layer F.SilkS)
     (effects (font (size 0.8 0.8) (thickness 0.15)))
   )
   (fp_text value VAL** (at 0 0) (layer F.SilkS) hide

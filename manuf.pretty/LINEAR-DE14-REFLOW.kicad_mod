@@ -1,5 +1,5 @@
-(module DE14-LTC-REFLOW (layer F.Cu) (tedit 540484E9)
-  (fp_text reference DE14-LTC-REFLOW (at 0 0) (layer F.SilkS)
+(module LINEAR-DE14-REFLOW (layer F.Cu) (tedit 540484E9)
+  (fp_text reference LINEAR-DE14-REFLOW (at 0 0) (layer F.SilkS)
     (effects (font (size 0.8 0.8) (thickness 0.15)))
   )
   (fp_text value VAL** (at 0 0) (layer F.SilkS) hide

@@ -1,5 +1,5 @@
-(module SI501-PKG-B (layer F.Cu) (tedit 54BEABBB)
-  (fp_text reference SI501-PKG-B (at 0 0) (layer F.SilkS)
+(module SILABS-DFN-SI501-B (layer F.Cu) (tedit 54BEABBB)
+  (fp_text reference SILABS-DFN-SI501-B (at 0 0) (layer F.SilkS)
     (effects (font (size 0.8 0.8) (thickness 0.15)))
   )
   (fp_text value VAL** (at 0 0) (layer F.SilkS) hide

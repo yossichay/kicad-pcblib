@@ -1,5 +1,5 @@
-(module L-AISC-1008-ABRACON (layer F.Cu) (tedit 54BB0961)
-  (fp_text reference L-AISC-1008-ABRACON (at 0 0) (layer F.SilkS)
+(module ABRACON-AISC-1008 (layer F.Cu) (tedit 54BB0961)
+  (fp_text reference ABRACON-AISC-1008 (at 0 0) (layer F.SilkS)
     (effects (font (size 0.8 0.8) (thickness 0.15)))
   )
   (fp_text value VAL** (at 0 0) (layer F.SilkS) hide

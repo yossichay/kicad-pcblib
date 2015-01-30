@@ -1,5 +1,5 @@
-(module LPDDR-SDRAM-60VFBGA (layer F.Cu) (tedit 54BDB4B4)
-  (fp_text reference LPDDR-SDRAM-60VFBGA (at 0 0) (layer F.SilkS)
+(module VFBGA-60-LPDDR-SDRAM (layer F.Cu) (tedit 54BDB4B4)
+  (fp_text reference VFBGA-60-LPDDR_SDRAM (at 0 0) (layer F.SilkS)
     (effects (font (size 0.8 0.8) (thickness 0.15)))
   )
   (fp_text value VAL** (at 0 0) (layer F.SilkS) hide

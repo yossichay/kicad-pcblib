@@ -1,5 +1,5 @@
-(module DDR3-SDRAM-96FBGA (layer F.Cu) (tedit 54B9E0DC)
-  (fp_text reference DDR3-SDRAM-96FBGA (at 0 0) (layer F.SilkS)
+(module FBGA-96-DDR3-SDRAM (layer F.Cu) (tedit 54B9E0DC)
+  (fp_text reference FBGA-96-DDR3-SDRAM (at 0 0) (layer F.SilkS)
     (effects (font (size 0.8 0.8) (thickness 0.15)))
   )
   (fp_text value VAL** (at 0 0) (layer F.SilkS) hide
