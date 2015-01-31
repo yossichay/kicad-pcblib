@@ -90,6 +90,9 @@ def main ():
     p.add_argument ("--rounded-pad-exceptions", dest="rpexcept", type=str,
             help="Rounded pad exception file. See freepcb2kicad.py " + \
                     "documentation.")
+    p.add_argument ("--add-courtyard", dest="courtyard", type=str,
+            default=None,
+            help="Add a courtyard a fixed number of mm outside the bounding box")
 
     args = p.parse_args ()
 
@@ -98,6 +101,9 @@ def main ():
 
     if args.rpexcept is not None:
         FREEPCB2KICAD_ARGS.extend (["--rounded-pad-exceptions", args.rpexcept])
+
+    if args.courtyard is not None:
+        FREEPCB2KICAD_ARGS.extend (["--add-courtyard", args.courtyard])
 
     # Download, if necessary, then open file
     if args.src.startswith ("http:/"):

@@ -3,7 +3,7 @@
 
 # freepcb2pretty
 
-# Written in 2014 by Chris Pavlina
+# Written in 2014-2015 by Chris Pavlina
 # CC0 1.0 Universal
 
 # This script reads a FreePCB library file and converts it to a KiCad
@@ -122,6 +122,9 @@ def to_mm (n):
     # pretty good...
     return float(n) / 1000000.
 
+def from_mm (n):
+    return float(n) * 1000000.
+
 class Library (object):
     def __init__ (self, file_in=None, opts=None):
         self.Modules = []
@@ -217,11 +220,11 @@ class PCBmodule (object):
                 key, value = file_in.get_string (allow_blank=False)
                 self.Centroid = value
             elif key == "outline_polyline":
-                self.Graphics.append (Polyline (file_in, opts))
+                self.Graphics.append (Polyline.create_from_freepcb (file_in, opts))
             elif key == "n_pins":
                 file_in.get_string (allow_blank=True) # Skip the n_pins line
             elif key == "pin":
-                self.Graphics.append (Pin (self.Name, file_in, opts))
+                self.Graphics.append (Pin.create_from_freepcb (self.Name, file_in, opts))
             else:
                 raise Exception ("Unexpected key \"%s\" on line %d."
                         % (key, file_in.Lineno - 1))
@@ -257,7 +260,7 @@ class PCBmodule (object):
         sexp.append ([S("descr"), str(self.Description)])
 
         sexp.append ([S("fp_text"),
-            S("reference"), self.Name,
+            S("reference"), "REF**",
             [S("at"), 0, 0],
             [S("layer"), "F.SilkS"],
             [S("effects"),
@@ -266,10 +269,9 @@ class PCBmodule (object):
                     [S("thickness"), 0.15]]]])
 
         sexp.append ([S("fp_text"),
-            S("value"), "VAL**",
+            S("value"), self.Name,
             [S("at"), 0, 0],
-            [S("layer"), "F.SilkS"],
-            S("hide"),
+            [S("layer"), "F.Fab"],
             [S("effects"),
                 [S("font"),
                     [S("size"), 0.8, 0.8],
@@ -299,16 +301,47 @@ class PCBmodule (object):
         if self.Name[-1] in "LMNlmn":
             self.Name = self.Name[:-1]
 
+    def bounding_box (self):
+        """Return a (left, right, top, bottom) bounding box"""
+        sub_boxes = [i.bounding_box() for i in self.Graphics]
+        lefts = [i[0] for i in sub_boxes]
+        rights = [i[1] for i in sub_boxes]
+        tops = [i[2] for i in sub_boxes]
+        bottoms = [i[3] for i in sub_boxes]
+        
+        bb = [min(lefts), max(rights), max(tops), min(bottoms)]
+        return bb
+
+    def add_courtyard (self, spacing):
+        left, right, top, bottom = self.bounding_box ()
+        left -= from_mm (spacing)
+        right += from_mm (spacing)
+        top += from_mm (spacing)
+        bottom -= from_mm (spacing)
+
+        cy = Polyline ()
+        cy.Points = [(left, top), (right, top), (right, bottom), (left, bottom),
+                (left, top)]
+        cy.KicadLinewidth = 0.15
+        cy.Layer = "F.CrtYd"
+
+        self.Graphics.append (cy)
 
 class Polyline (object):
-    def __init__ (self, file_in, opts):
+    def __init__ (self):
         """Read a polyline object."""
 
-        self.opts = opts
+        self.opts = None
         self.Points = []
         self.Linewidth = None
         self.Closed = False
+        self.Layer = "F.SilkS"
+        self.KicadLinewidth = 0.35
 
+    @classmethod
+    def create_from_freepcb (cls, file_in, opts):
+        self = cls ()
+        self.opts = opts
         # First point and line width
         key, value = file_in.get_string (allow_blank=False)
         assert key == "outline_polyline"
@@ -343,6 +376,7 @@ class Polyline (object):
             file_in.get_string (allow_blank=False)
             self.Closed = True
             self.Points.append (self.Points[0])
+        return self
 
     def __str__ (self):
         s = "Polyline:\n" \
@@ -359,19 +393,26 @@ class Polyline (object):
             sexp.append ([S("fp_line"),
                 [S("start"), to_mm (last_corner[0]), to_mm (-last_corner[1])],
                 [S("end"), to_mm (i[0]), to_mm (-i[1])],
-                [S("layer"), "F.SilkS"],
-                [S("width"), 0.35]])
+                [S("layer"), self.Layer],
+                [S("width"), self.KicadLinewidth]])
             last_corner = i
 
         return sexp
-                
+
+    def bounding_box (self):
+        """Return a (left, right, top, bottom) bounding box"""
+        left = min (i[0] for i in self.Points)
+        right = max (i[0] for i in self.Points)
+        top = max (i[1] for i in self.Points)
+        bottom = min (i[1] for i in self.Points)
+        return (left, right, top, bottom) 
 
 class Pin (object):
-    def __init__ (self, modname, file_in, opts):
+    def __init__ (self, modname):
         """Read a pin object."""
 
-        self.opts = opts
 
+        self.opts = None
         self.ModName = modname
         self.Name = None
         self.DrillDiam = None
@@ -382,6 +423,11 @@ class Pin (object):
         self.InnerPad = None
         self.BottomPad = None
 
+    @classmethod
+    def create_from_freepcb (cls, modname, file_in, opts):
+        self = cls (modname)
+
+        self.opts = opts
         key, value = file_in.get_string (allow_blank=False)
         assert key == "pin"
 
@@ -411,6 +457,8 @@ class Pin (object):
             else:
                 raise Exception ("Unexpected key \"%s\" on line %d."
                         % (key, file_in.Lineno - 1))
+        
+        return self
 
     def __str__ (self):
         s = "Pin:\n" + \
@@ -479,6 +527,21 @@ class Pin (object):
                 [S("layers"), "*.Cu", "*.Mask", "F.Silks"]])
 
         return sexp
+
+    def bounding_box (self):
+        """Return a (left, right, top, bottom) bounding box"""
+        sx, sy = self.TopPad.Width, self.TopPad.Len1 + self.TopPad.Len2
+        if self.Angle == 90:
+            sx, sy = sy, sx
+        else:
+            assert self.Angle == 0
+
+        left = self.Coords[0] - (sy / 2)
+        right = self.Coords[0] + (sy / 2)
+        top = self.Coords[1] + (sx / 2)
+        bottom = self.Coords[1] - (sx / 2)
+
+        return (left, right, top, bottom)
 
 class Pad (object):
     def __init__ (self, value, file_in):
@@ -639,6 +702,9 @@ def main (args=None, zipfile=None):
     p.add_argument ("--strip-lmn", dest="strip_lmn", action="store_const",
             const=True, default=False,
             help="Strip final L/M/N specifiers from names")
+    p.add_argument ("--add-courtyard", dest="courtyard", type=float,
+            default=None,
+            help="Add a courtyard a fixed number of mm outside the bounding box")
     args = p.parse_args (args)
 
     # Parse rounded pads exceptions file?
@@ -678,6 +744,11 @@ def main (args=None, zipfile=None):
     # Add 3D models
     if args.threedmap is not None:
         process_3dmap (args.threedmap, library)
+
+    # Add courtyards
+    if args.courtyard is not None:
+        for i in library.Modules:
+            i.add_courtyard (args.courtyard)
 
     print ("Generating KiCad library...")
     for i in library.Modules:
