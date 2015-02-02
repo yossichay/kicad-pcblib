@@ -18,7 +18,7 @@ import shutil
 
 VERSION = "1.0"
 
-FREEPCB2KICAD_ARGS = ["--blurb", "--rounded-except-1", "--strip-lmn"]
+FREEPCB2KICAD_ARGS = ["--blurb", "--rounded-pads", "--strip-lmn"]
 
 # Py2/3 imports
 try:
@@ -88,8 +88,13 @@ def main ():
             help="Module-3D model map. See freepcb2kicad.py documentation.")
 
     p.add_argument ("--rounded-pad-exceptions", dest="rpexcept", type=str,
-            help="Rounded pad exception file. See freepcb2kicad.py " + \
+            help="Rounded pad exception file. See freepcb2kicad.py for " + \
                     "documentation.")
+
+    p.add_argument ("--rounded-center-exceptions", dest="rcexcept", type=str,
+            help="Rounded center pad exception file. See freepcb2kicad.py for " + \
+                    "documentation.")
+
     p.add_argument ("--add-courtyard", dest="courtyard", type=str,
             default=None,
             help="Add a courtyard a fixed number of mm outside the bounding box")
@@ -101,6 +106,9 @@ def main ():
 
     if args.rpexcept is not None:
         FREEPCB2KICAD_ARGS.extend (["--rounded-pad-exceptions", args.rpexcept])
+
+    if args.rcexcept is not None:
+        FREEPCB2KICAD_ARGS.extend (["--rounded-center-exceptions", args.rcexcept])
 
     if args.courtyard is not None:
         FREEPCB2KICAD_ARGS.extend (["--add-courtyard", args.courtyard])

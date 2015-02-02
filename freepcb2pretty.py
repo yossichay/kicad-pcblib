@@ -21,6 +21,11 @@
 #  - Regular expressions are matched before stripping L/M/N
 # Blank lines are ignored.
 
+# ROUNDED CENTER PADS EXCEPTIONS LIST:
+# This file worls just like the rounded pads exceptions list, except only
+# applies to pads located at the center of a part. This allows rounding all
+# pads except a thermal pad.
+
 # 3D MAP:
 # This file is used to specify 3D models for use with each module. The format
 # is a sequence of "key: value" pairs, one per line, like this:
@@ -489,8 +494,14 @@ class Pin (object):
             for regex in self.opts.rpexceptions:
                 if regex.match (self.ModName):
                     can_round_pads = False
+            can_round_center = True
+            for regex in self.opts.rcexceptions:
+                if regex.match (self.ModName):
+                    can_round_center = False
 
             if self.opts.roundedpads is None:
+                shape = "rect"
+            elif not can_round_center and (0, 0) == tuple (self.Coords):
                 shape = "rect"
             elif self.opts.roundedpads == "all":
                 shape = "oval" if can_round_pads else "rect"
@@ -699,6 +710,9 @@ def main (args=None, zipfile=None):
     p.add_argument ("--rounded-pad-exceptions", dest="rpexcept", type=str,
             help="Exceptions list for rounded pads. See source code " + \
                     "(comments in header) for documentation.")
+    p.add_argument ("--rounded-center-exceptions", dest="rcexcept", type=str,
+            help="Exceptions list for rounded center pads. See source code " + \
+                    "(comments in header) for documentation.")
     p.add_argument ("--strip-lmn", dest="strip_lmn", action="store_const",
             const=True, default=False,
             help="Strip final L/M/N specifiers from names")
@@ -718,6 +732,18 @@ def main (args=None, zipfile=None):
                 rpexceptions.append (re.compile (line))
     # It's really an argument, so put it inside args
     args.rpexceptions = rpexceptions
+
+    # Parse rounded center pads exceptions file?
+    rcexceptions = []
+    if args.rcexcept is not None:
+        with open (args.rcexcept) as f:
+            for line in f:
+                line = line.strip ()
+                if not line:
+                    continue
+                rcexceptions.append (re.compile (line))
+    # It's really an argument, so put it inside args
+    args.rcexceptions = rcexceptions
 
     # Main conversion
     print ("Loading FreePCB library...")

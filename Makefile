@@ -37,6 +37,7 @@ IPC7351-Least.pretty: IPC7351-Least_v2.zip
 	mkdir IPC7351-Least.pretty
 	${PYTHON} download_ipc.py --no-confirm-license \
 		--3dmap config/3dmap --rounded-pad-exceptions config/rpexceptions \
+		--rounded-center-exceptions config/rcexceptions \
 		--add-courtyard 0.1 \
 		${IPC_LEAST} IPC7351-Least.pretty freepcb2pretty.py
 
@@ -45,6 +46,7 @@ IPC7351-Most.pretty: IPC7351-Most_v2.zip
 	mkdir IPC7351-Most.pretty
 	${PYTHON} download_ipc.py --no-confirm-license \
 		--3dmap config/3dmap --rounded-pad-exceptions config/rpexceptions \
+		--rounded-center-exceptions config/rcexceptions \
 		--add-courtyard 0.5 \
 		${IPC_MOST} IPC7351-Most.pretty freepcb2pretty.py
 
@@ -53,6 +55,7 @@ IPC7351-Nominal.pretty: IPC7351-Nominal_v2.zip
 	mkdir IPC7351-Nominal.pretty
 	${PYTHON} download_ipc.py --no-confirm-license \
 		--3dmap config/3dmap --rounded-pad-exceptions config/rpexceptions \
+		--rounded-center-exceptions config/rcexceptions \
 		--add-courtyard 0.25 \
 		${IPC_NOMINAL} IPC7351-Nominal.pretty freepcb2pretty.py
 
