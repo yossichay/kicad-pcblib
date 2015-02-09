@@ -10,4 +10,9 @@
   (fp_circle (center 0 0) (end 4.6 0) (layer F.Fab) (width 0.35))
   (pad 1 thru_hole circle (at -2.5 0) (size 1.3 1.3) (drill 0.8) (layers *.Cu *.Mask F.SilkS))
   (pad 2 thru_hole circle (at 2.5 0) (size 1.3 1.3) (drill 0.8) (layers *.Cu *.Mask F.SilkS))
+  (model misc_comp/inductor_8mm-p5.wrl
+    (at (xyz 0 0 0))
+    (scale (xyz 1 1 0.75))
+    (rotate (xyz 0 0 0))
+  )
 )
