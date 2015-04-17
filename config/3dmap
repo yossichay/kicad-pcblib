@@ -999,3 +999,17 @@ mod: XTAL1200X480X460
 
 mod: RESC3225X60
 3dmod: smd_resistors/r_1210.wrl
+
+mod: QFN50P900X900X100-65
+3dmod: smd_qfn/qfn-64.wrl
+rotz: 90
+
+mod: QFN50P300X300X100-17
+3dmod: smd_qfn/qfn-16.wrl
+scax: 0.6
+scay: 0.6
+rotz: 90
+
+mod: QFP50P1600X1600X100-100
+3dmod: smd_lqfp/tqfp-100.wrl
+rotz: 90
