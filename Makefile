@@ -69,5 +69,5 @@ IPC7351-Nominal_v2.zip:
 	wget ${IPC_NOMINAL}
 
 3d:
-	rm -rf 3d
+	find 3d -mindepth 1 -maxdepth 1 -type d -exec rm -rf '{}' ';'
 	${PYTHON} download_3d.py
