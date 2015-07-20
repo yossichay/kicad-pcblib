@@ -15,7 +15,7 @@
   (fp_circle (center 0 0) (end 5 0) (layer F.SilkS) (width 0.35))
   (pad 1 thru_hole rect (at -2.49936 0) (size 1.524 1.524) (drill 0.889) (layers *.Cu *.Mask F.SilkS))
   (pad 2 thru_hole circle (at 2.49936 0) (size 1.524 1.524) (drill 0.889) (layers *.Cu *.Mask F.SilkS))
-  (model capacitors/cp_10x13mm.wrl
+  (model capacitors/cp_10x12.5mm.wrl
     (at (xyz 0 0 0))
     (scale (xyz 1 1 1))
     (rotate (xyz 0 0 90))
