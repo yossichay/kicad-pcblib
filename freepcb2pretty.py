@@ -51,14 +51,50 @@ import sys
 import re
 import os.path
 
-import pcbnew_pretty
-
 
 VERSION="1.0"
 
 TEXT_SIZE = 1.
 TEXT_THICK = 0.2
 
+
+class SexpSymbol (object):
+    """An s-expression symbol. This is a bare text object which is exported
+    without quotation or escaping. Be careful to use valid text here..."""
+
+    def __init__ (self, s):
+        self.s = s
+
+    def __str__ (self):
+        return self.s
+
+# For short code
+S = SexpSymbol
+
+def SexpDump (sexp, f, indentlevel=0):
+    """Dump an s-expression to a file.
+    indentlevel is used for recursion.
+    """
+
+    if isinstance (sexp, list):
+        f.write ("(")
+        first = True
+        for i in sexp:
+            if first:
+                first = False
+            else:
+                f.write (" ")
+
+            SexpDump (i, f, indentlevel + 1)
+        f.write (")")
+
+    elif isinstance (sexp, str):
+        f.write ('"')
+        f.write (sexp.encode ("unicode_escape").decode ("ascii"))
+        f.write ('"')
+
+    else:
+        f.write (str (sexp))
 
 def indent_string (s):
     """Put two spaces before each line in s"""
@@ -219,16 +255,51 @@ class PCBmodule (object):
             s += indent_string (str (i))
         return s
 
-    def kicad(self):
-        pm = pcbnew_pretty.PCBmodule(self.Name, self.Description)
-        pm.graphics = [i.kicad() for i in self.Graphics]
-        if self.ThreeDName is not None:
-            pm.threed = pcbnew_pretty.ThreeD(
-                    self.ThreeDName, self.ThreeDOffset, self.ThreeDScale, self.ThreeDRot)
-        return pm
-
     def kicad_sexp (self):
-        return self.kicad().sexp()
+        sexp = [S('module')]
+
+        sexp.append (self.Name)
+        sexp.append ([S("layer"), "F.Cu"])
+        sexp.append ([S("tedit"), "%08X" % int (time.time ())])
+
+        sexp.append ([S("descr"), str(self.Description)])
+
+        sexp.append ([S("fp_text"),
+            S("reference"), "REF**",
+            [S("at"), 0, 0],
+            [S("layer"), "F.SilkS"],
+            [S("effects"),
+                [S("font"),
+                    [S("size"), 0.8, 0.8],
+                    [S("thickness"), 0.15]]]])
+
+        sexp.append ([S("fp_text"),
+            S("value"), self.Name,
+            [S("at"), 0, 0],
+            [S("layer"), "F.Fab"],
+            [S("effects"),
+                [S("font"),
+                    [S("size"), 0.8, 0.8],
+                    [S("thickness"), 0.15]]]])
+
+        # Polylines
+        for i in self.Graphics:
+            if not isinstance (i, Polyline): continue
+            sexp.extend (i.kicad_sexp ())
+
+        # Pads/pins
+        for i in self.Graphics:
+            if not isinstance (i, Pin): continue
+            sexp.extend (i.kicad_sexp ())
+
+        # 3D
+        if self.ThreeDName is not None:
+            sexp.append ([S("model"), self.ThreeDName,
+                [S("at"), [S("xyz")] + self.ThreeDOffset],
+                [S("scale"), [S("xyz")] + self.ThreeDScale],
+                [S("rotate"), [S("xyz")] + self.ThreeDRot]])
+
+        return sexp
 
     def strip_lmn (self):
         """Strip least/most/nominal specifier from all modules"""
@@ -242,7 +313,7 @@ class PCBmodule (object):
         rights = [i[1] for i in sub_boxes]
         tops = [i[2] for i in sub_boxes]
         bottoms = [i[3] for i in sub_boxes]
-
+        
         bb = [min(lefts), max(rights), max(tops), min(bottoms)]
         return bb
 
@@ -269,6 +340,7 @@ class Polyline (object):
         self.Points = []
         self.Linewidth = None
         self.Closed = False
+        self.Layer = "F.SilkS"
         self.KicadLinewidth = 0.35
 
     @classmethod
@@ -318,13 +390,19 @@ class Polyline (object):
             s += "  Point: %d, %d\n" % tuple (i)
         return s
 
-    def kicad(self):
-        kp = pcbnew_pretty.Polyline()
-        kp.points = self.Points
-        kp.layer = "F.SilkS"
-
     def kicad_sexp (self):
-        return self.kicad().sexp()
+
+        sexp = []
+        last_corner = self.Points[0]
+        for i in self.Points[1:]:
+            sexp.append ([S("fp_line"),
+                [S("start"), to_mm (last_corner[0]), to_mm (-last_corner[1])],
+                [S("end"), to_mm (i[0]), to_mm (-i[1])],
+                [S("layer"), self.Layer],
+                [S("width"), self.KicadLinewidth]])
+            last_corner = i
+
+        return sexp
 
     def bounding_box (self):
         """Return a (left, right, top, bottom) bounding box"""
@@ -332,7 +410,7 @@ class Polyline (object):
         right = max (i[0] for i in self.Points)
         top = max (i[1] for i in self.Points)
         bottom = min (i[1] for i in self.Points)
-        return (left, right, top, bottom)
+        return (left, right, top, bottom) 
 
 class Pin (object):
     def __init__ (self, modname):
@@ -384,7 +462,7 @@ class Pin (object):
             else:
                 raise Exception ("Unexpected key \"%s\" on line %d."
                         % (key, file_in.Lineno - 1))
-
+        
         return self
 
     def __str__ (self):
@@ -398,10 +476,10 @@ class Pin (object):
                 "  BottomPad: " + str (self.BottomPad) + "\n"
         return s
 
-    def kicad(self):
+    def kicad_sexp (self):
         """See Library.kicad_repr"""
 
-        kp = pcbnew_pretty.Pad()
+        sexp = []
 
         if self.DrillDiam == 0:
             # Surface mount
@@ -435,13 +513,11 @@ class Pin (object):
             else:
                 assert False
 
-            kp.drill = 0
-            kp.name = self.Name
-            kp.sx, kp.sy = to_mm(sx), to_mm(sy)
-            kp.x, kp.y = to_mm(self.Coords[0]), -to_mm(self.Coords[1])
-            kp.kind = "smd"
-            kp.shape = shape
-            kp.layers = ["F.Cu", "F.Paste", "F.Mask"]
+            # Output shape
+            sexp.append ([S("pad"), self.Name, S("smd"), S(shape),
+                [S("at"), to_mm (self.Coords[0]), -to_mm (self.Coords[1])],
+                [S("size"), to_mm (sy), to_mm (sx)],
+                [S("layers"), "F.Cu", "F.Paste", "F.Mask"]])
 
         else:
             # PTH
@@ -455,18 +531,13 @@ class Pin (object):
             else:
                 shape = "circle"
 
-            kp.drill = to_mm(self.DrillDiam)
-            kp.name = self.Name
-            kp.sx, kp.sy = to_mm(sx), to_mm(sy)
-            kp.x, kp.y = to_mm(self.Coords[0]), -to_mm(self.Coords[1])
-            kp.kind = "thru_hole"
-            kp.shape = shape
-            kp.layers = ["*.Cu", "*.Mask", "F.SilkS"]
+            sexp.append (S[("pad"), self.Name, S("thru_hole"), S(shape),
+                [S("at"), to_mm (self.Coords[0]), -to_mm (self.Coords[1])],
+                [S("size"), to_mm (sy), to_mm (sx)],
+                [S("drill"), to_mm (self.DrillDiam)],
+                [S("layers"), "*.Cu", "*.Mask", "F.Silks"]])
 
-        return kp
-
-    def kicad_sexp(self):
-        return self.kicad().sexp()
+        return sexp
 
     def bounding_box (self):
         """Return a (left, right, top, bottom) bounding box"""
@@ -710,7 +781,7 @@ def main (args=None, zipfile=None):
         path = os.path.join (args.outdir, i.Name + '.kicad_mod')
         with open (path, 'w') as f:
             sexp = i.kicad_sexp ()
-            pcbnew_pretty.SexpDump (sexp, f)
+            SexpDump (sexp, f)
             # sexpdata.dump (i.kicad_sexp (), f)
 
 if __name__ == "__main__":
