@@ -87,6 +87,8 @@ def main ():
     p.add_argument ("--3dmap", dest="threedmap", type=str,
             help="Module-3D model map. See freepcb2kicad.py documentation.")
 
+    p.add_argument ("--rounded-pads", dest="roundedpads", action="store_const", const="all", default=None)
+    p.add_argument ("--rounded-except-1", dest="roundedpads", action="store_const", const="allbut1", default=None)
     p.add_argument ("--rounded-pad-exceptions", dest="rpexcept", type=str,
             help="Rounded pad exception file. See freepcb2kicad.py for " + \
                     "documentation.")
@@ -112,6 +114,11 @@ def main ():
 
     if args.courtyard is not None:
         FREEPCB2KICAD_ARGS.extend (["--add-courtyard", args.courtyard])
+
+    if args.roundedpads == "all":
+        FREEPCB2KICAD_ARGS.append ("--rounded-pads")
+    elif args.roundedpads == "allbut1":
+        FREEPCB2KICAD_ARGS.append ("--rounded-except-1")
 
     # Download, if necessary, then open file
     if args.src.startswith ("http:/"):
