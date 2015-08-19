@@ -1021,3 +1021,8 @@ rotz: 90
 mod: QFP80P900X900X160-32
 3dmod: smd_lqfp/lqfp-32.wrl
 rotz: 90
+
+mod: SOIC254P1016X460-4
+3dmod: smd_dil/mdip_4.wrl
+rotz: 90
+
