@@ -28,9 +28,15 @@ else
 endif
 
 
-.PHONY: ipcpretty 3d IPC7351-Least.pretty IPC7351-Most.pretty IPC7351-Nominal.pretty
+.PHONY: all ipc 3d IPC7351-Least.pretty IPC7351-Most.pretty IPC7351-Nominal.pretty
 
-ipcpretty: IPC7351-Least.pretty IPC7351-Most.pretty IPC7351-Nominal.pretty
+all:
+	@echo "To fetch 3D models, run:"
+	@echo "    make 3d"
+	@echo "To fetch and convert IPC7351 footprints, run:"
+	@echo "    make ipc"
+
+ipc: IPC7351-Least.pretty IPC7351-Most.pretty IPC7351-Nominal.pretty
 
 IPC7351-Least.pretty: IPC7351-Least_v2.zip
 	rm -rf IPC7351-Least.pretty
