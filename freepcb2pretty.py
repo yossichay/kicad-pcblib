@@ -175,10 +175,10 @@ class PCBmodule (object):
 
 
         # Pre-indent data
-        self.Name = None
-        self.Author = None
-        self.Source = None
-        self.Description = None
+        self.Name = ""
+        self.Author = ""
+        self.Source = ""
+        self.Description = ""
 
         while not file_in.indent_level () and not file_in.at_end ():
             key, value = file_in.get_string (allow_blank=False)
@@ -197,14 +197,14 @@ class PCBmodule (object):
         assert self.Name
         assert self.Author
         assert self.Source
-        assert self.Description
+        #assert self.Description
 
         # Post-indent data
         self.Units = None
         self.SelectionRect = None
         self.RefText = None
-        self.ValText = None
-        self.Centroid = None
+        self.ValText = ""
+        self.Centroid = "0 0 0 0"
         self.Graphics = []
 
         while file_in.indent_level () and not file_in.at_end ():
@@ -239,7 +239,6 @@ class PCBmodule (object):
         assert self.Units == "NM"
         assert self.SelectionRect
         assert self.RefText
-        assert self.ValText
         assert self.Centroid == "0 0 0 0"
 
 
@@ -479,8 +478,6 @@ class Pin (object):
     def kicad_sexp (self):
         """See Library.kicad_repr"""
 
-        sexp = []
-
         if self.DrillDiam == 0:
             # Surface mount
             sx, sy = self.TopPad.Width, self.TopPad.Len1 + self.TopPad.Len2
@@ -514,10 +511,10 @@ class Pin (object):
                 assert False
 
             # Output shape
-            sexp.append ([S("pad"), self.Name, S("smd"), S(shape),
+            sexp = [[S("pad"), self.Name, S("smd"), S(shape),
                 [S("at"), to_mm (self.Coords[0]), -to_mm (self.Coords[1])],
                 [S("size"), to_mm (sy), to_mm (sx)],
-                [S("layers"), "F.Cu", "F.Paste", "F.Mask"]])
+                [S("layers"), "F.Cu", "F.Paste", "F.Mask"]]]
 
         else:
             # PTH
@@ -531,11 +528,11 @@ class Pin (object):
             else:
                 shape = "circle"
 
-            sexp.append (S[("pad"), self.Name, S("thru_hole"), S(shape),
+            sexp = [[S("pad"), self.Name, S("thru_hole"), S(shape),
                 [S("at"), to_mm (self.Coords[0]), -to_mm (self.Coords[1])],
                 [S("size"), to_mm (sy), to_mm (sx)],
                 [S("drill"), to_mm (self.DrillDiam)],
-                [S("layers"), "*.Cu", "*.Mask", "F.Silks"]])
+                [S("layers"), "*.Cu", "*.Mask", "F.SilkS"]]]
 
         return sexp
 
@@ -559,11 +556,15 @@ class Pad (object):
         try:
             value = [int(i) for i in value.split ()]
         except ValueError:
-            raise Exception ("Line %d must contain a list of five integers."
-                    % file_in.Lineno - 1)
-        if len (value) != 5:
-            raise Exception ("Line %d must contain a list of five integers."
-                    % file_in.Lineno - 1)
+            raise Exception ("Line %d must contain a list of four or five integers."
+                    % (file_in.Lineno - 1))
+        if len (value) != 5 and len (value) != 4:
+            raise Exception ("Line %d must contain a list of four or five integers."
+                    % (file_in.Lineno - 1))
+
+        if len (value) == 4:
+            # default corner radius
+            value.append(0)
 
         self.Shape, self.Width, self.Len1, self.Len2, self.CornRad = value
 
@@ -595,7 +596,7 @@ class FreePCBfile (object):
         if value.startswith ('"') and value.endswith ('"'):
             value, throwaway = parse_string (value)
         if not value:
-            raise Exception ("Line %d: expected value" % self.Lineno - 1)
+            raise Exception ("Line %d: expected value" % (self.Lineno - 1))
 
         return key, value
 
