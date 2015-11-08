@@ -263,6 +263,8 @@ class PCBmodule (object):
 
         sexp.append ([S("descr"), str(self.Description)])
 
+        sexp.append ([S("attr"), S("smd")])
+
         sexp.append ([S("fp_text"),
             S("reference"), "REF**",
             [S("at"), 0, 0],
