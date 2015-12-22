@@ -68,6 +68,9 @@ class SexpSymbol (object):
     def __str__ (self):
         return self.s
 
+    def __repr__ (self):
+        return "SexpSymbol(%r)" % self.s
+
 # For short code
 S = SexpSymbol
 
