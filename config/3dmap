@@ -1026,3 +1026,12 @@ mod: SOIC254P1016X460-4
 3dmod: smd_dil/mdip_4.wrl
 rotz: 90
 
+mod: QFN50P700X700X100-49
+3dmod: smd_qfn/s-pvqfn-n48.wrl
+rotz: 90
+
+mod: QFN65P400X400X80-17
+3dmod: smd_qfn/qfn-16.wrl
+scax: 0.812
+scay: 0.812
+rotz: 90
