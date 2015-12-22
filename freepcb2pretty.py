@@ -241,6 +241,8 @@ class PCBmodule (object):
         assert self.RefText
         assert self.Centroid == "0 0 0 0"
 
+        self.tedit = time.time()
+
 
     def __str__ (self):
         s = "PCB footprint:\n" \
@@ -259,7 +261,7 @@ class PCBmodule (object):
 
         sexp.append (self.Name)
         sexp.append ([S("layer"), "F.Cu"])
-        sexp.append ([S("tedit"), "%08X" % int (time.time ())])
+        sexp.append ([S("tedit"), "%08X" % int (self.tedit)])
 
         sexp.append ([S("descr"), str(self.Description)])
 
@@ -722,6 +724,9 @@ def main (args=None, zipfile=None):
     p.add_argument ("--add-courtyard", dest="courtyard", type=float,
             default=None,
             help="Add a courtyard a fixed number of mm outside the bounding box")
+    p.add_argument ("--hash-time", dest="hashtime", action="store_const",
+            const=True, default=False,
+            help="Set a fake edit time on the footprints using a hash")
     args = p.parse_args (args)
 
     # Parse rounded pads exceptions file?
@@ -778,6 +783,17 @@ def main (args=None, zipfile=None):
     if args.courtyard is not None:
         for i in library.Modules:
             i.add_courtyard (args.courtyard)
+
+    # Fake timestamps?
+    if args.hashtime:
+        import hashlib
+        import struct
+        for i in library.Modules:
+            i.tedit = 0
+            md5 = hashlib.md5()
+            md5.update(str(i.kicad_sexp()).encode('utf8'))
+            md5sum = md5.digest()
+            i.tedit = struct.unpack("<L", md5sum[0:4])[0]
 
     print ("Generating KiCad library...")
     for i in library.Modules:

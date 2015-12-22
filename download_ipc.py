@@ -100,6 +100,9 @@ def main ():
     p.add_argument ("--add-courtyard", dest="courtyard", type=str,
             default=None,
             help="Add a courtyard a fixed number of mm outside the bounding box")
+    p.add_argument ("--hash-time", dest="hashtime", action="store_const",
+            const=True, default=False,
+            help="Set a fake edit time on the footprints using a hash")
 
     args = p.parse_args ()
 
@@ -119,6 +122,9 @@ def main ():
         FREEPCB2KICAD_ARGS.append ("--rounded-pads")
     elif args.roundedpads == "allbut1":
         FREEPCB2KICAD_ARGS.append ("--rounded-except-1")
+
+    if args.hashtime:
+        FREEPCB2KICAD_ARGS.append ("--hash-time")
 
     # Download, if necessary, then open file
     if args.src.startswith ("http:/"):
