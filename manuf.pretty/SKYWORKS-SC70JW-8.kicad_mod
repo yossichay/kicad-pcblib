@@ -1,5 +1,6 @@
 (module SKYWORKS-SC70JW-8 (layer F.Cu) (tedit 54CEF9C2)
   (descr "Skyworks SC70JW-8")
+  (attr smd)
   (fp_text reference REF** (at 0 0) (layer F.SilkS)
     (effects (font (size 0.8 0.8) (thickness 0.15)))
   )

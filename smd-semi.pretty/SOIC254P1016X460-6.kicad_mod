@@ -1,5 +1,6 @@
 (module SOIC254P1016X460-6 (layer F.Cu) (tedit 55D0FA46)
   (descr "SOIC,2.54mm pitch;4 pin,7.00mm W X 5.10mm L X 4.60mm H body")
+  (attr smd)
   (fp_text reference REF** (at 0 0) (layer F.SilkS)
     (effects (font (size 0.8 0.8) (thickness 0.15)))
   )

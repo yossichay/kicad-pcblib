@@ -1,5 +1,6 @@
 (module ANALOG-LFCSP_VD-8 (layer F.Cu) (tedit 54E54370)
   (descr "PSON,0.50mm pitch;8 pin,4.10mm W X 3.00mm L X 0.80mm H body (pullback leads) (w/thermal tab)")
+  (attr smd)
   (fp_text reference REF** (at 0 0) (layer F.SilkS)
     (effects (font (size 0.8 0.8) (thickness 0.15)))
   )

@@ -1,4 +1,5 @@
 (module LITEON-LED2-C155GEKT (layer F.Cu) (tedit 5634D92B)
+  (attr smd)
   (fp_text reference REF** (at 0 0) (layer F.SilkS)
     (effects (font (size 0.8 0.8) (thickness 0.15)))
   )

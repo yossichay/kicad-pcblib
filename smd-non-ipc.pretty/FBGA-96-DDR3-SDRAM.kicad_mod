@@ -1,4 +1,5 @@
 (module FBGA-96-DDR3-SDRAM (layer F.Cu) (tedit 54CEFB49)
+  (attr smd)
   (fp_text reference REF** (at 0 0) (layer F.SilkS)
     (effects (font (size 0.8 0.8) (thickness 0.15)))
   )
