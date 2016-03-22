@@ -1043,3 +1043,7 @@ mod: QFN65P400X400X80-17
 scax: 0.812
 scay: 0.812
 rotz: 90
+
+mod: SOJ127P1118X375-28
+3dmod: smd_dil/soic-28.wrl
+rotz: 90
