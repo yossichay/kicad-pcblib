@@ -893,6 +893,10 @@ mod: SOP65P640X120-14
 3dmod: smd_dil/tssop-14.wrl
 rotz: 90
 
+mod: SOP65P640X110-8
+3dmod: smd_dil/tssop-8.wrl
+rotz: 90
+
 mod: SOIC127P600X175-9
 3dmod: smd_dil/so-8.wrl
 rotz: 90
