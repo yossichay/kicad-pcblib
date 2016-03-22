@@ -976,6 +976,10 @@ mod: QFP50P1600X1600X160-100
 scaz: 1.4
 rotz: 90
 
+mod: QFP50P1600X1600X120-100
+3dmod: smd_lqfp/tqfp-100.wrl
+rotz: 90
+
 mod: RESC6432X70
 3dmod: smd_resistors/r_2512.wrl
 
