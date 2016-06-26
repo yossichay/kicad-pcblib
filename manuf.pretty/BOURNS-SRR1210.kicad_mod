@@ -23,4 +23,9 @@
   (fp_line (start 6 -6) (end 6 -3.5) (layer F.SilkS) (width 0.35))
   (pad 1 smd rect (at -5.05 0) (size 2.8 5.3) (layers F.Cu F.Paste F.Mask))
   (pad 2 smd rect (at 5.05 0) (size 2.8 5.3) (layers F.Cu F.Paste F.Mask))
+  (model ${KISYS3DMOD}/smd_inductors/inductor_smd_6.5x4.8mm.wrl
+    (at (xyz 0 0 0))
+    (scale (xyz 1.6 1.6 0.8))
+    (rotate (xyz 0 0 90))
+  )
 )
