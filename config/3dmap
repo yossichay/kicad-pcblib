@@ -1047,3 +1047,7 @@ rotz: 90
 mod: SOJ127P1118X375-28
 3dmod: smd_dil/soic-28.wrl
 rotz: 90
+
+mod: SOIC127P600X170-9
+3dmod: smd_dil/so-8.wrl
+rotz: 90
