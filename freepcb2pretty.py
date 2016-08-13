@@ -91,7 +91,7 @@ def SexpDump (sexp, f, indentlevel=0):
             SexpDump (i, f, indentlevel + 1)
         f.write (")")
 
-    elif isinstance (sexp, str):
+    elif isinstance (sexp, (str, unicode)):
         f.write ('"')
         f.write (sexp.encode ("unicode_escape").decode ("ascii"))
         f.write ('"')
@@ -285,8 +285,8 @@ class PCBmodule (object):
             [S("layer"), "F.Fab"],
             [S("effects"),
                 [S("font"),
-                    [S("size"), 0.8, 0.8],
-                    [S("thickness"), 0.15]]]])
+                    [S("size"), 0.5, 0.5],
+                    [S("thickness"), 0.1]]]])
 
         # Polylines
         for i in self.Graphics:
@@ -333,7 +333,7 @@ class PCBmodule (object):
         cy = Polyline ()
         cy.Points = [(left, top), (right, top), (right, bottom), (left, bottom),
                 (left, top)]
-        cy.KicadLinewidth = 0.15
+        cy.KicadLinewidth = 0.05
         cy.Layer = "F.CrtYd"
 
         self.Graphics.append (cy)
@@ -347,7 +347,7 @@ class Polyline (object):
         self.Linewidth = None
         self.Closed = False
         self.Layer = "F.SilkS"
-        self.KicadLinewidth = 0.35
+        self.KicadLinewidth = 0.15
 
     @classmethod
     def create_from_freepcb (cls, file_in, opts):
@@ -365,7 +365,8 @@ class Polyline (object):
             raise Exception ("Line %d must contain a list of three integers."
                 % (file_in.Lineno - 1))
 
-        self.Linewidth = value[0]
+        self.Linewidth = 0.15#value[0]
+        #print value[0]
         self.Points.append (value[1:])
 
         # Subsequent points
@@ -539,7 +540,7 @@ class Pin (object):
                 [S("at"), to_mm (self.Coords[0]), -to_mm (self.Coords[1])],
                 [S("size"), to_mm (sy), to_mm (sx)],
                 [S("drill"), to_mm (self.DrillDiam)],
-                [S("layers"), "*.Cu", "*.Mask", "F.SilkS"]]]
+                [S("layers"), "*.Cu", "*.Mask"]]]
 
         return sexp
 
