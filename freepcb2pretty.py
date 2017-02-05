@@ -51,6 +51,10 @@ import sys
 import re
 import os.path
 
+try:
+    unicode
+except NameError:
+    unicode = str
 
 VERSION="1.0"
 
