@@ -881,6 +881,10 @@ mod: PLCC127P1752X1752X368-44
 3dmod: smd_plcc/plcc44.wrl
 rotz: 180
 
+mod: SOP65P640X120-20
+3dmod: smd_dil/tssop-20.wrl
+rotz: 90
+
 mod: SOP65P640X110-16
 3dmod: smd_dil/tssop-16.wrl
 rotz: 90
